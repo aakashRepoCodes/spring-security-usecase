@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,7 +20,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                        // .requestMatchers("/").permitAll() //to make a route public
@@ -26,6 +30,17 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) )
                 //session is not created, every request has to identify itself with valid token
                 .build();
+    }
 
+    //Hard coded Auth : Spring Security internally uses UserDetailsService for Auth
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        UserDetails userDetails = User.withDefaultPasswordEncoder()
+                .username("aakash")
+                .password("admin")
+                .build();
+
+        return new InMemoryUserDetailsManager(userDetails);
     }
 }
