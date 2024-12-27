@@ -24,6 +24,17 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.28' // Use the latest version
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    //mysql
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
 }
 
 tasks.named('test') {
