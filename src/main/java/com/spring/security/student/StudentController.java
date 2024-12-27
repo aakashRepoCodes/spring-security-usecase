@@ -27,7 +27,6 @@ public class StudentController {
             throw new IllegalStateException("CSRF token is not available");
         }
         return csrfToken;
-
     }
 
     // By - default spring security blocks put/patch/post req without a valid csrf token
