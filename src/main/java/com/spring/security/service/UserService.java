@@ -18,6 +18,9 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JWTService jwtService;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public AppUser registerUser(AppUser user) {
@@ -31,7 +34,7 @@ public class UserService {
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
         if (authentication.isAuthenticated())
-            return "Success";
+            return jwtService.generateToken(user.getUsername());
 
         return "Authentication failed";
     }
