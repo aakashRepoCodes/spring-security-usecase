@@ -1,5 +1,6 @@
 package com.spring.security.config;
 
+import com.spring.security.commons.auth.JWTFilter;
 import com.spring.security.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,9 @@ public class SecurityConfig {
 
     @Autowired
     public MyUserDetailService userDetailService;
+
+    @Autowired
+    private JWTFilter jwtFilter;
 
     String[] freeResourceUrls = { "register" ,"login"};
     @Bean
@@ -32,6 +37,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()) // enforce authentication
                 .httpBasic(Customizer.withDefaults()) //For rest client: Postman
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
